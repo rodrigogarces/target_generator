@@ -1,0 +1,5 @@
+youbot_navigation/youbot_navigation_common
+/home/raphael/catkin_ws/devel/.private/youbot_navigation_common/share/youbot_navigation_common/cmake/youbot_navigation_commonConfig.cmake /home/raphael/catkin_ws/devel/share/youbot_navigation_common/cmake/youbot_navigation_commonConfig.cmake
+/home/raphael/catkin_ws/devel/.private/youbot_navigation_common/share/youbot_navigation_common/cmake/youbot_navigation_commonConfig-version.cmake /home/raphael/catkin_ws/devel/share/youbot_navigation_common/cmake/youbot_navigation_commonConfig-version.cmake
+/home/raphael/catkin_ws/devel/.private/youbot_navigation_common/lib/youbot_navigation_common/lowpass_filter /home/raphael/catkin_ws/devel/lib/youbot_navigation_common/lowpass_filter
+/home/raphael/catkin_ws/devel/.private/youbot_navigation_common/lib/pkgconfig/youbot_navigation_common.pc /home/raphael/catkin_ws/devel/lib/pkgconfig/youbot_navigation_common.pc

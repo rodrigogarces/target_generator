@@ -1,0 +1,52 @@
+[01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.cpp:[m[K In member function ‘[01m[Kvoid TargetGenerator::GeneticAlgorithm()[m[K’:
+[01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.cpp:999:35:[m[K [01;31m[Kerror: [m[K‘[01m[Kfuncao[m[K’ was not declared in this scope
+     IniciaPop(&P, MAXPOP, MAXVAR, funcao);
+[01;32m[K                                   ^[m[K
+[01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.cpp:1005:48:[m[K [01;31m[Kerror: [m[K‘[01m[KlimFixos[m[K’ was not declared in this scope
+     printf("\n      Evoluindo %s com %d vars", limFixos[funcao].nom, MAXVAR);
+[01;32m[K                                                ^[m[K
+[01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.cpp:[m[K At global scope:
+[01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.cpp:1102:6:[m[K [01;31m[Kerror: [m[Kprototype for ‘[01m[Kvoid TargetGenerator::IniciaPop(Populacao*, int, int)[m[K’ does not match any in class ‘[01m[KTargetGenerator[m[K’
+ void TargetGenerator::IniciaPop(Populacao *p, int m, int n)
+[01;32m[K      ^[m[K
+In file included from [01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.cpp:6:0[m[K:
+[01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.h:175:10:[m[K [01;31m[Kerror: [m[Kcandidate is: void TargetGenerator::IniciaPop(Populacao*, int, int, int)
+     void IniciaPop(Populacao *p, int m, int n, int nfun);
+[01;32m[K          ^[m[K
+[01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.cpp:[m[K In member function ‘[01m[Kvoid TargetGenerator::CruzaBlend(Populacao*, int, int, int, float)[m[K’:
+[01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.cpp:1164:34:[m[K [01;31m[Kerror: [m[K‘[01m[KlimFixos[m[K’ was not declared in this scope
+     if (p->indiv[filho].var[i] < limFixos[FUNCAO].inf)
+[01;32m[K                                  ^[m[K
+In file included from [01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.h:28:0[m[K,
+                 from [01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.cpp:6[m[K:
+[01m[K/home/raphael/catkin_ws/src/target_generator/src/Parameters.h:99:16:[m[K [01;31m[Kerror: [m[K‘[01m[Kf12[m[K’ was not declared in this scope
+ #define FUNCAO f12
+[01;32m[K                ^[m[K
+[01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.cpp:1164:43:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[KFUNCAO[m[K’
+     if (p->indiv[filho].var[i] < limFixos[FUNCAO].inf)
+[01;32m[K                                           ^[m[K
+[01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.cpp:[m[K At global scope:
+[01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.cpp:1546:8:[m[K [01;31m[Kerror: [m[Kprototype for ‘[01m[Kdouble TargetGenerator::SimplexFixo(double*, int, int)[m[K’ does not match any in class ‘[01m[KTargetGenerator[m[K’
+ double TargetGenerator::SimplexFixo(double *indiv, int tam, int passos)
+[01;32m[K        ^[m[K
+In file included from [01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.cpp:6:0[m[K:
+[01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.h:182:12:[m[K [01;31m[Kerror: [m[Kcandidate is: double TargetGenerator::SimplexFixo(double*, int, int, int)
+     double SimplexFixo(double *indiv, int tam, int passos, int funcao);
+[01;32m[K            ^[m[K
+[01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.cpp:1557:8:[m[K [01;31m[Kerror: [m[Kprototype for ‘[01m[Kdouble TargetGenerator::SimplexRand(double*, int, int)[m[K’ does not match any in class ‘[01m[KTargetGenerator[m[K’
+ double TargetGenerator::SimplexRand(double *indiv, int tam, int passos) 
+[01;32m[K        ^[m[K
+In file included from [01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.cpp:6:0[m[K:
+[01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.h:183:12:[m[K [01;31m[Kerror: [m[Kcandidate is: double TargetGenerator::SimplexRand(double*, int, int, int)
+     double SimplexRand(double *indiv, int tam, int passos, int funcao);
+[01;32m[K            ^[m[K
+[01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.cpp:[m[K In member function ‘[01m[Kvoid TargetGenerator::IniciaSct(Populacao*, int, int, int)[m[K’:
+[01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.cpp:1580:9:[m[K [01;31m[Kerror: [m[K‘[01m[KlimFixos[m[K’ was not declared in this scope
+   inf = limFixos[nfun].inf;
+[01;32m[K         ^[m[K
+[01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.cpp:1594:68:[m[K [01;31m[Kerror: [m[K‘[01m[Krandgen[m[K’ was not declared in this scope
+       p->indiv[i].var[j] = (double)randgen(lista[j], lista[j] + pas);
+[01;32m[K                                                                    ^[m[K
+make[2]: *** [CMakeFiles/TargetGenerator.dir/src/TargetGenerator.cpp.o] Error 1
+make[1]: *** [CMakeFiles/TargetGenerator.dir/all] Error 2
+make: *** [all] Error 2

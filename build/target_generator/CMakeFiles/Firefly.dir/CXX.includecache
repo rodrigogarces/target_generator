@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/raphael/catkin_ws/src/target_generator/src/Firefly.cpp
+Firefly.h
+/home/raphael/catkin_ws/src/target_generator/src/Firefly.h
+stdlib.h
+/home/raphael/catkin_ws/src/target_generator/src/stdlib.h
+
+/home/raphael/catkin_ws/src/target_generator/src/Firefly.h
+

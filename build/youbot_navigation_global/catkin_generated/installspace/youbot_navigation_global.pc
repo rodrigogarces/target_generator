@@ -1,0 +1,8 @@
+prefix=/home/raphael/catkin_ws/install
+
+Name: youbot_navigation_global
+Description: Description of youbot_navigation_global
+Version: 0.1.0
+Cflags: 
+Libs: -L/home/raphael/catkin_ws/install/lib 
+Requires: 

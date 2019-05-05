@@ -1,0 +1,9 @@
+[ 30%] Built target Firefly
+[ 40%] Built target Node
+[ 60%] Built target AStar
+[35m[1mScanning dependencies of target TargetGenerator[0m
+[ 70%] [32mBuilding CXX object CMakeFiles/TargetGenerator.dir/src/TargetGenerator.cpp.o[0m
+[ 80%] [32m[1mLinking CXX shared library /home/raphael/catkin_ws/devel/.private/target_generator/lib/libTargetGenerator.so[0m
+[ 80%] Built target TargetGenerator
+[ 90%] [32m[1mLinking CXX executable /home/raphael/catkin_ws/devel/.private/target_generator/lib/target_generator/target_generator[0m
+[100%] Built target target_generator

@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/raphael/catkin_ws/src/target_generator/src/Node.cpp
+Node.h
+/home/raphael/catkin_ws/src/target_generator/src/Node.h
+cmath
+-
+
+/home/raphael/catkin_ws/src/target_generator/src/Node.h
+string
+-
+vector
+-
+

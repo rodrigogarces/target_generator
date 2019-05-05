@@ -1,0 +1,1 @@
+/home/raphael/catkin_ws/devel/.private/youbot_navigation_global/share/youbot_navigation_global/cmake/youbot_navigation_globalConfig-version.cmake
