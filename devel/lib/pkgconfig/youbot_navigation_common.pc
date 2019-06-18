@@ -1,1 +1,0 @@
-/home/raphael/catkin_ws/devel/.private/youbot_navigation_common/lib/pkgconfig/youbot_navigation_common.pc

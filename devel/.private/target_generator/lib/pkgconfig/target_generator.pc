@@ -1,8 +1,0 @@
-prefix=/home/raphael/catkin_ws/devel/.private/target_generator
-
-Name: target_generator
-Description: Description of target_generator
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/raphael/catkin_ws/devel/.private/target_generator/lib 
-Requires: 
