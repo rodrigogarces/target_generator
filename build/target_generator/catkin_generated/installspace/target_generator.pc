@@ -1,8 +1,0 @@
-prefix=/home/raphael/catkin_ws/install
-
-Name: target_generator
-Description: Description of target_generator
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/raphael/catkin_ws/install/lib 
-Requires: 
