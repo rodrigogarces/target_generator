@@ -1,7 +1,0 @@
-[01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.cpp:[m[K In member function ‘[01m[Kvoid TargetGenerator::FireflyAlgorithm()[m[K’:
-[01m[K/home/raphael/catkin_ws/src/target_generator/src/TargetGenerator.cpp:627:29:[m[K [01;31m[Kerror: [m[K‘[01m[KNumF1reflies[m[K’ was not declared in this scope
-             for (j = 0; j < NumF1reflies; j++)
-[01;32m[K                             ^[m[K
-make[2]: *** [CMakeFiles/TargetGenerator.dir/src/TargetGenerator.cpp.o] Error 1
-make[1]: *** [CMakeFiles/TargetGenerator.dir/all] Error 2
-make: *** [all] Error 2

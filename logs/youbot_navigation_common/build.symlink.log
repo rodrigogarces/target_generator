@@ -1,4 +1,0 @@
-Symlinking /home/ros/target_generator/devel/lib/pkgconfig/youbot_navigation_common.pc
-Symlinking /home/ros/target_generator/devel/lib/youbot_navigation_common/lowpass_filter
-Symlinking /home/ros/target_generator/devel/share/youbot_navigation_common/cmake/youbot_navigation_commonConfig-version.cmake
-Symlinking /home/ros/target_generator/devel/share/youbot_navigation_common/cmake/youbot_navigation_commonConfig.cmake

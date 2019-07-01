@@ -1,4 +1,0 @@
-youbot_navigation/youbot_navigation_local
-/home/raphael/catkin_ws/devel/.private/youbot_navigation_local/share/youbot_navigation_local/cmake/youbot_navigation_localConfig.cmake /home/raphael/catkin_ws/devel/share/youbot_navigation_local/cmake/youbot_navigation_localConfig.cmake
-/home/raphael/catkin_ws/devel/.private/youbot_navigation_local/share/youbot_navigation_local/cmake/youbot_navigation_localConfig-version.cmake /home/raphael/catkin_ws/devel/share/youbot_navigation_local/cmake/youbot_navigation_localConfig-version.cmake
-/home/raphael/catkin_ws/devel/.private/youbot_navigation_local/lib/pkgconfig/youbot_navigation_local.pc /home/raphael/catkin_ws/devel/lib/pkgconfig/youbot_navigation_local.pc

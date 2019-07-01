@@ -1,8 +1,0 @@
-Symlinking /home/ros/target_generator/devel/lib/libFirefly.so
-Symlinking /home/ros/target_generator/devel/lib/libAStar.so
-Symlinking /home/ros/target_generator/devel/lib/libNode.so
-Symlinking /home/ros/target_generator/devel/lib/libTargetGenerator.so
-Symlinking /home/ros/target_generator/devel/lib/target_generator/target_generator
-Symlinking /home/ros/target_generator/devel/lib/pkgconfig/target_generator.pc
-Symlinking /home/ros/target_generator/devel/share/target_generator/cmake/target_generatorConfig-version.cmake
-Symlinking /home/ros/target_generator/devel/share/target_generator/cmake/target_generatorConfig.cmake

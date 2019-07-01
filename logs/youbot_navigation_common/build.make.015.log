@@ -1,4 +1,0 @@
-[35m[1mScanning dependencies of target lowpass_filter[0m
-[ 50%] [32mBuilding CXX object CMakeFiles/lowpass_filter.dir/src/lowpass_filter.cpp.o[0m
-[100%] [32m[1mLinking CXX executable /home/ros/target_generator/devel/.private/youbot_navigation_common/lib/youbot_navigation_common/lowpass_filter[0m
-[100%] Built target lowpass_filter
