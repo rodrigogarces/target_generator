@@ -36,16 +36,16 @@ Abra o V-REP e inicie a simulação.
 
 ## Compilação
 
-Clone o projeto do github na pasta src de seu ros workspace:
+Clone o projeto do github na sua pasta pessoal:
 
 ```sh
-cd (your_ros_ws)/src
-git clone https://github.com/yourname/github-link
+git clone https://github.com/rodrigogarces/target_generator.git
+
 ```
 Compile (Recomendo usar [Catkin Command Line Tools](http://mcs.une.edu.au/doc/python-catkin_tools-doc/html/)):
 
 ```sh
-cd ..
+cd target_generator
 catkin build
 ```
 

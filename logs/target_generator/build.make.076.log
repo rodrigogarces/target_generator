@@ -3,8 +3,8 @@
 [ 10%] [32mBuilding CXX object CMakeFiles/Node.dir/src/Node.cpp.o[0m
 [ 20%] [32mBuilding CXX object CMakeFiles/Firefly.dir/src/Firefly.cpp.o[0m
 [ 30%] [32m[1mLinking CXX shared library /home/ros/target_generator/devel/.private/target_generator/lib/libFirefly.so[0m
-[ 30%] Built target Firefly
 [ 40%] [32m[1mLinking CXX shared library /home/ros/target_generator/devel/.private/target_generator/lib/libNode.so[0m
+[ 40%] Built target Firefly
 [ 40%] Built target Node
 [35m[1mScanning dependencies of target AStar[0m
 [ 50%] [32mBuilding CXX object CMakeFiles/AStar.dir/src/AStar.cpp.o[0m
