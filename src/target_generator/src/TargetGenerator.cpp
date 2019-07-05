@@ -1,12 +1,12 @@
 #define FUNCAOPP
 #define PARAM_PLF
-#define FIREFLY
+#define DOWNHILLSIMPLEX
 
 #include "TargetGenerator.h"
 
 TargetGenerator::TargetGenerator(ros::NodeHandle *nodehandle) : nh_(*nodehandle)
 {
-    ROS_INFO("Inicializando nó TargetGenerator");
+    ROS_INFO("Inicializando no TargetGenerator");
     initializeSubscribers();
     initializePublishers();
 
@@ -126,6 +126,24 @@ void TargetGenerator::mapCallback(const nav_msgs::OccupancyGrid::ConstPtr &map)
 #endif
 
 #ifdef DOWNHILLSIMPLEX
+    //temporário que recebe a posição atal do robô
+		double temp_pos[2];
+		temp_pos[0] = (double)robot_position[0];
+		temp_pos[1] = (double)robot_position[1];
+    int temp3;
+
+		//double temp_dest[2];
+
+    //temp_dest = Simplex(temp_pos, 100, TAXERR, SCALE, PASSOS, VLALFA, VLBETA, VLGAMA)
+    temp3 = Simplex(temp_pos, 100, TAXERR, SCALE, PASSOS, VLALFA, VLBETA, VLGAMA);
+		//recebe fitness do menor como resposta
+
+    printf("ótimo encontrado: (%.0f,%.0f) = %f\n", temp_pos[0],temp_pos[1],temp3);
+		destino_corrente[0] = (int)temp_pos[0];
+		destino_corrente[1] = (int)temp_pos[1];
+
+
+
 #endif
 
 #ifdef MULTISTARTGRANDIENT
@@ -174,7 +192,7 @@ void TargetGenerator::finalizeExploration()
 
     cout << "\nO MAPEAMENTO FINALIZOU.\n";
     system("rosnode kill SLAM");  // finaliza node SLAM
-                                            // Outros nodes precisam ser finalizados 
+                                            // Outros nodes precisam ser finalizados
     ros::shutdown();
     return;
 }
@@ -342,8 +360,8 @@ void TargetGenerator::loadAuxiliaryLists(const nav_msgs::OccupancyGrid::ConstPtr
 void TargetGenerator::avaliateStoppingCriteria()
 {
     // O critério de parada é: se a quantidade de desconhecidos é menor que um determinado valor;
-    // O ideal seria qtde de desconhecidos == 0, mas devido a incerteza do SLAM sempre há pontos 
-    // espalhados pelo mapa ainda desconhecidos. 
+    // O ideal seria qtde de desconhecidos == 0, mas devido a incerteza do SLAM sempre há pontos
+    // espalhados pelo mapa ainda desconhecidos.
 
     int NoDesc;
 
@@ -817,8 +835,8 @@ double TargetGenerator::ObjectiveFunction(double posicao[], int step)
 
         //cout << "\nhere" << endl;
         for (int ii = pixel[0] - 5; ii<pixel[0] + 5; ii++)
-        { 
-            if (ii < 0 || ii >= h)  
+        {
+            if (ii < 0 || ii >= h)
               continue;
             //cout << "\nii -> " << ii << endl;
             for (int jj = pixel[1] - 5; jj<pixel[1] + 5; jj++)
@@ -831,7 +849,7 @@ double TargetGenerator::ObjectiveFunction(double posicao[], int step)
                   distD += 1;
                 else if (_mapa[ii][jj] < 0)
                   distD -= 1;
-            } 
+            }
         }
         */
         //distD = exp(-distD / (2 * w3*w3));
@@ -1016,11 +1034,11 @@ void TargetGenerator::GeneticAlgorithm()
 
             if (pMuta > rand() % 100 && (MAXGER - numGeracoes) > (0.95 * MAXGER))
             {
-                
+
                 //                        fit = ObjectiveFunction(P.indiv[P.pior].var, P.tamInd);
                 fit = SimplexFixo(P.indiv[P.pior].var, P.tamInd, MaxIt, funcao);
                 P.numMuta++;
-                
+
             }
             else
             {
@@ -1058,7 +1076,7 @@ void TargetGenerator::GeneticAlgorithm()
         erro = (double)P.indiv[P.melhor].fit - SOLUCAO;
     }
 
-    
+
 
     /* *******************RESULTADOS ******************** */
 
@@ -1285,7 +1303,7 @@ double TargetGenerator::Simplex(double start[], int n, double EPSILON,
     vc = (double *)malloc(n * sizeof(double));
     vm = (double *)malloc(n * sizeof(double));
     vb = (double *)malloc(n * sizeof(double));
-    
+
 
     /* allocate the columns of the arrays */
     for (i = 0; i <= n; i++)
@@ -1528,8 +1546,10 @@ double TargetGenerator::Simplex(double start[], int n, double EPSILON,
     {
         // fprintf("%e\n",v[vs][j]);
         start[j] = v[vs][j];
+
     }
     min = ObjectiveFunction(v[vs], n);
+    // printf("ótimo encontrado: (%.0f,%.0f) = %f\n", start[0],start[1],min);
     k++;
     //  fprintf("%d Function Evaluations\n",k);
     //  fprintf("%d Iterations through program\n",itr);
