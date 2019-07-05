@@ -130,7 +130,7 @@ void TargetGenerator::mapCallback(const nav_msgs::OccupancyGrid::ConstPtr &map)
 		double temp_pos[2];
 		temp_pos[0] = (double)robot_position[0];
 		temp_pos[1] = (double)robot_position[1];
-    int temp3;
+    double temp3;
 
 		//double temp_dest[2];
 
