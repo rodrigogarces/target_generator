@@ -139,8 +139,8 @@ void TargetGenerator::mapCallback(const nav_msgs::OccupancyGrid::ConstPtr &map)
 		//recebe fitness do menor como resposta
 
     printf("ótimo encontrado: (%.0f,%.0f) = %f\n", temp_pos[0],temp_pos[1],temp3);
-		destino_corrente[0] = (int)temp_pos[0];
-		destino_corrente[1] = (int)temp_pos[1];
+		destino_corrente[0] = (int)temp_pos[1];
+		destino_corrente[1] = (int)temp_pos[0];
 
 
 
