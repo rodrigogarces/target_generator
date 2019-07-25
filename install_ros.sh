@@ -25,11 +25,12 @@ source ~/.bashrc
 sudo apt install -y python-rosinstall python-rosinstall-generator python-wstool build-essential python-catkin-tools
 
 #download V-REP
-cd ~
-wget http://coppeliarobotics.com/files/V-REP_PRO_EDU_V3_6_2_Ubuntu16_04.tar.xz -O vrep.tar.xz
+cd /usr/local
+sudo wget http://coppeliarobotics.com/files/V-REP_PRO_EDU_V3_6_2_Ubuntu16_04.tar.xz -O vrep.tar.xz
 
 #install vrep on current user
-tar -xf vrep.tar.xz
+sudo tar -xf vrep.tar.xz
+sudo rm vrep.tar.xz
 
 #download project dependencies
 sudo apt install -y ros-kinetic-navigation ros-kinetic-move-base ros-kinetic-gmapping
