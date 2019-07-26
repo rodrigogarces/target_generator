@@ -14,9 +14,20 @@ Sistema testado em simulação usando o simulador robótico [V-REP](http://www.c
 ## Instalação via script
 Simplesmente execute o script `install_ros.sh` localizado na raiz do repositório. O script se encarregará de fazer uma instalação completa do ROS, do V-REP (com a criação de um atalho no menu) e todas as dependências necessárias à execução do projeto.
 
+
+Em seguida execute o script `install_workspace.sh` para compilar o projeto e criar os scripts necessários para a execução do projeto.
+
 ## Instalação manual
 
 ## Execução via script
+Note que foram criados dois scripts executáveis na sua pasta pessoal: `a1slam.sh` ou `a2slam.sh`
+
+Execute o script `a1slam.sh` para iniciar a simulação do SLAM no primeiro ambiente e o script `a2slam.sh` para inciar a simulação do SLAM no segundo ambiente.
+
+## Instalação manual
+
+## Execução via script
+
 
 ## Execução manual
 
@@ -51,7 +62,6 @@ Clone o projeto do github na sua pasta pessoal:
 
 ```sh
 git clone https://github.com/rodrigogarces/target_generator.git
-
 ```
 Compile (Recomendo usar [Catkin Command Line Tools](http://mcs.une.edu.au/doc/python-catkin_tools-doc/html/)):
 
