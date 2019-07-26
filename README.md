@@ -3,11 +3,22 @@
 
 Este pacote ros propricia a navegação autônoma e mapeamento de robôs móveis em abientes desconhecidos. Ao receber um occupancy grid do node /SLAM, que faz o mapemanento e localização simultaneos, trasnforma o mapa em uma superficie de função objetivo e executa algorimos de otimização para busca os pontos do mapa mais interessantes para o robôs. Ao encontrar o melhor ponto este é enviado para o robô, e então o robô navega até lá.
 
-Sistema testado em simulação usando o simulador robótico [V-REP](http://www.coppeliarobotics.com/). As cenas usadas estão disponiveis no diretório ./scenes/. Necessário a instação dos pacotes [navigation](http://wiki.ros.org/navigation), [move_base](http://wiki.ros.org/move_base), [youbot_navigation](http://wiki.ros.org/youbot_navigation) e [gmapping](http://wiki.ros.org/gmapping).
+Sistema testado em simulação usando o simulador robótico [V-REP](http://www.coppeliarobotics.com/) utilizando Ubuntu 16.04 LTS. As cenas usadas estão disponiveis no diretório `./scenes/`. Necessário a instação dos pacotes [navigation](http://wiki.ros.org/navigation), [move_base](http://wiki.ros.org/move_base), [youbot_navigation](http://wiki.ros.org/youbot_navigation) e [gmapping](http://wiki.ros.org/gmapping).
 
 ![](../header.png)
 
-## Execução
+## Pré requisitos
+* Ubuntu 16.04 LTS
+* Instalação do [ROS kinetic kame](http://wiki.ros.org/kinetic/Installation/Ubuntu)
+
+## Instalação via script
+Simplesmente execute o script `install_ros.sh` localizado na raiz do repositório. O script se encarregará de fazer uma instalação completa do ROS, do V-REP (com a criação de um atalho no menu) e todas as dependências necessárias à execução do projeto.
+
+## Instalação manual
+
+## Execução via script
+
+## Execução manual
 
 Inicie o ros:
 
