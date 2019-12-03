@@ -1,0 +1,21 @@
+<launch>
+
+  <param name="use_sim_time" type="bool" value="true"/>
+
+  <node pkg="gmapping" type="slam_gmapping" name="gmapping" output="screen">
+    <rosparam>
+      odom_frame: odom
+      base_frame: base_link
+      xmin: -10
+      ymin: -10
+      xmax: 10
+      ymax: 10
+      maxUrange: 5
+      delta: 0.025
+    </rosparam>
+    <remap from="scan" to="base_scan"/>
+  </node>
+
+  <node pkg="rviz" type="rviz" name="rviz" output="screen"/>
+
+</launch>

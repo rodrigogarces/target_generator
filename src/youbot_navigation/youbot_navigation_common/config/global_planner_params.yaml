@@ -1,0 +1,7 @@
+
+NavfnROS:                                  # Also see: http://wiki.ros.org/global_planner
+  allow_unknown: true                           # Allow planner to plan through unknown space, default true
+  track_unknown_space: true
+
+  default_tolerance: 0.4                        # If goal in obstacle, plan to the closest point in radius default_tolerance, default 0.0
+

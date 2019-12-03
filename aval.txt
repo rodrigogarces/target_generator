@@ -1,0 +1,8 @@
+Exp 1 => pathlenght: 162 	 function calls: 4001815 
+Exp 1 => pathlenght: 268 	 function calls: 4805190 
+Exp 1 => pathlenght: 228 	 function calls: 1740016 
+Exp 1 => pathlenght: 222 	 function calls: 3126773 
+Exp 1 => pathlenght: 767 	 function calls: 2937581 
+Exp 1 => pathlenght: 339 	 function calls: 1030672 
+Exp 1 => pathlenght: 521 	 function calls: 473878 
+Exp 1 => pathlenght: 1082 	 function calls: 476655 

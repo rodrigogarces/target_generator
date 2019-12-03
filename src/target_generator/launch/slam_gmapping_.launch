@@ -1,0 +1,17 @@
+<launch>	
+  <node pkg="gmapping" name="SLAM" type="slam_gmapping" output="screen">
+    <rosparam>
+        odom_frame: odom
+        base_frame: base_link
+        xmin: -10
+        ymin: -10
+        xmax: 10
+        ymax: 10
+        delta: 0.1
+        temporalUpdate: 0.5
+        angularUpdate: 0.1
+        linearUpdate: 0.1
+    </rosparam>
+    <remap from="/scan" to="/vrep/front_scan"/>	
+  </node>
+</launch>

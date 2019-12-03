@@ -1,0 +1,35 @@
+<launch>	
+  <node pkg="gmapping" name="SLAM" type="slam_gmapping" output="screen">
+    <rosparam>
+        odom_frame: odom
+        base_frame: base_link
+        map_update_interval: 2
+        map_frame: map
+        maxUrange: 30.0
+        maxRange: 60.0
+        sigma: 0.05
+        kernelSize: 1
+        lstep: 0.05
+        astep: 0.05
+        iterations: 5
+        lsigma: 0.075
+        ogain: 3.0
+        lskip: 0
+        linearUpdate: 0.5
+        angularUpdate: 0.436
+        temporalUpdate: 1.0
+        resampleThreshold: 0.5
+        particles: 80
+        xmin: -10.0
+        ymin: -10.0
+        xmax: 10.0
+        ymax: 10.0
+        delta: 0.025
+        llsamplerange: 0.01
+        llsamplestep: 0.01
+        lasamplerange: 0.005
+        lasamplestep: 0.005
+    </rosparam>
+    <remap from="/scan" to="/vrep/front_scan"/>	
+  </node>
+</launch>

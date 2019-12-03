@@ -1,0 +1,23 @@
+<launch>
+    <node pkg="map_server" type="map_server" name="map_server" output="screen" args="/home/viki/Pmap.yaml"/>
+    
+    <node pkg="amcl" type="amcl" name="amcl">
+        <remap from="scan" to="/vrep/front_scan" />
+    </node>
+
+    <node pkg="move_base" type="move_base" respawn="true" name="move_base_node" output="screen">
+        <remap from="cmd_vel" to="/vrep/cmd_vel" />
+
+        <rosparam file="$(find youbot_navigation_common)/config/move_base_params.yaml" command="load" />
+
+        <rosparam file="$(find youbot_navigation_common)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+
+        <rosparam file="$(find youbot_navigation_common)/config/costmap_common_params.yaml" command="load" ns="local_costmap"/>
+
+        <rosparam file="$(find youbot_navigation_local)/config/local_costmap_params.yaml" command="load" />
+
+        <rosparam file="$(find youbot_navigation_local)/config/global_costmap_params.yaml" command="load" />
+
+        <rosparam file="$(find youbot_navigation_common)/config/base_local_planner_params.yaml" command="load" />
+    </node>
+</launch>
