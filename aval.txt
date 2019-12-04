@@ -8,3 +8,4 @@ Exp 1 => pathlenght: 521 	 function calls: 473878
 Exp 1 => pathlenght: 1082 	 function calls: 476655 
 Exp 1 => pathlenght: 197 	 function calls: 3884605 
 Exp 1 => pathlenght: 110 	 function calls: 10970411 
+Exp 1 => pathlenght: 144 	 function calls: 31518 

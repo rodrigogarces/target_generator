@@ -4,7 +4,7 @@
 #define _USE_MATH_DEFINES
 
 #define NUMERO_MINIMO_PFRONTEIRA 10
-#define DIST_MIN 5 // 5 // Distância minina do alvo ao robô, para que seja gerado uma caminho
+//#define DIST_MIN 5 // 5 // Distância minina do alvo ao robô, para que seja gerado uma caminho
 
 #define sind(x) (sin(fmod((x), 360) * M_PI / 180))
 #define cosd(x) (cos(fmod((x), 360) * M_PI / 180))
