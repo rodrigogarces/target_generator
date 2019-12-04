@@ -203,9 +203,6 @@ class TargetGenerator
     void GeneticAlgorithm(); // Implementa o Algoritmo Genético
     void SimplexAlgorithm(); // Implementa o Algoritmo Simplex
 
-    // Metódos auxiliares:
-    double Distance(double *p1, double *p2);
-
     void SortPop();
     void ReplacePop();
 
@@ -258,7 +255,7 @@ class TargetGenerator
     void init_firefly(Firefly *firefly);
     void init_vars(Fireflies &fireflies);
     void initFireflies(Fireflies &fireflies, int &Aval);
-    double euclidianDistance(Firefly &first, Firefly &second);
+    double euclidianDistance(double *var1, double *var2);
     void moveFireflies(Firefly &xi, Firefly &xj);
     void fireflyExploration(Fireflies &fireflies, int &Aval);
 

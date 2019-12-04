@@ -58,12 +58,21 @@ void TargetGenerator::initFireflies(Fireflies &fireflies, int &Aval) {
     }
 }
 
-double TargetGenerator::euclidianDistance(Firefly &first, Firefly &second) {
-    return distance(first.var, second.var);
+double TargetGenerator::euclidianDistance(double *var1, double *var2) {
+    register double sum = 0.0;
+    for (int i = 0; i < D; i++) {
+        sum += pow(var1[i] - var2[i], 2);
+    }
+    return sqrt(sum);
 }
 
+double TargetGenerator::distance(double *p1, double *p2) {
+    return euclidianDistance(p1, p2) / pixel_size;
+}
+
+
 void TargetGenerator::moveFireflies(Firefly &xi, Firefly &xj) { // movendo o firefly i em direção do j
-    double euclidian_distance = euclidianDistance(xi, xj);
+    double euclidian_distance = euclidianDistance(xi.var, xj.var);
     double beta = /* beta0 */ 1 * exp(-GAMMA * pow(euclidian_distance, 2));
     double ruido = ((double)(rand() % 100001) / 100000.);
     
@@ -261,9 +270,10 @@ void TargetGenerator::mapCallback(const nav_msgs::OccupancyGrid::ConstPtr &map) 
     dis = sqrt(dis);
 
     // -> Se a distância é menor que a distancia minima, o alvo não é atualizado
-    if (dilatedMap[destino_corrente[0]][destino_corrente[1]] != 0)
+    if (dilatedMap[destino_corrente[0]][destino_corrente[1]] != 0){
+        printf("Reavalia....\n");
         has_goal = false;
-    else has_goal = true;
+    } else has_goal = true;
 
     //cout << endl
     //     << "distancia: " << dis << endl
@@ -396,6 +406,7 @@ void TargetGenerator::dilateDangerRegion(const nav_msgs::OccupancyGrid::ConstPtr
 
             max = 0;
             double dis;
+
             for (int ei = i - aux; ei <= i + aux; ++ei)
             {
                 for (int ej = j - aux; ej <= j + aux; ++ej)
@@ -714,13 +725,6 @@ void TargetGenerator::publishNewTarget() {
     target_pub_.publish(_msg);
 }
 
-double TargetGenerator::distance(double *p1, double *p2) {
-    double ssd = 0.0;
-    for (int i = 0; i < D; i++)
-        ssd += pow(p1[i] - p2[i], 2);
-    return sqrt(ssd) / pixel_size;
-}
-
 void TargetGenerator::FireflyAlgorithm() {
     // Implementa Firefly's Algorithm
 
@@ -906,12 +910,12 @@ double TargetGenerator::ObjectiveFunction(double posicao[], int step)
         double distF = 0;
         double rp[2] = {(double)robot_position[1], (double)robot_position[0]};
         double dp[2] = {(double)destino_corrente[1], (double)destino_corrente[0]};
-        double dr = Distance(pixel, rp);
+        double dr = distance(pixel, rp);
 
         for (int f = 0; f < fi; ++f)
         {
             double pf[2] = {(double)fronteira[f][0], (double)fronteira[f][1]};
-            double d = Distance(pixel, pf);
+            double d = distance(pixel, pf);
             distF += exp(-d / (2 * w1 * w1));
         }
 
@@ -919,7 +923,7 @@ double TargetGenerator::ObjectiveFunction(double posicao[], int step)
         for (int r = 0; r < ri; ++r)
         {
             double pr[2] = {(double)regiao_perigo[r][0], (double)regiao_perigo[r][1]};
-            double d = Distance(pixel, pr);
+            double d = distance(pixel, pr);
             distR += exp(-d / (2 * w2 * w2));
         }
 
@@ -928,7 +932,7 @@ double TargetGenerator::ObjectiveFunction(double posicao[], int step)
         for (int v = 0; v < vi; ++v)
         {
             double pv[2] = {(double)visitados[v][0], (double)visitados[v][1]};
-            double d = Distance(pixel, pv);
+            double d = distance(pixel, pv);
             distV += exp(-d / (2 * w3 * w3));
         }
 
@@ -956,13 +960,6 @@ double TargetGenerator::ObjectiveFunction(double posicao[], int step)
     }
 }
 
-double TargetGenerator::Distance(double *p1, double *p2)
-{
-    double ssd = 0.0;
-    for (int i = 0; i < 2; i++)
-        ssd += (p1[i] - p2[i]) * (p1[i] - p2[i]);
-    return sqrt(ssd) / pixel_size;
-}
 
 void TargetGenerator::SortPop()
 {
