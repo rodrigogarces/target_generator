@@ -2,7 +2,7 @@
 #define PARAM_PLF
 #define FIREFLY
 #define FIREFLYJORGE
-
+#define AMB1
 
 
 #include "TargetGenerator.h"
@@ -59,11 +59,7 @@ void TargetGenerator::initFireflies(Fireflies &fireflies, int &Aval) {
 }
 
 double TargetGenerator::euclidianDistance(Firefly &first, Firefly &second) {
-    register double sum = 0.0;
-    for(int i = 0; i < D; i++) {
-        sum += pow(first.var[i] - second.var[i], 2);
-    }
-    return sqrt(sum);
+    return distance(first.var, second.var);
 }
 
 void TargetGenerator::moveFireflies(Firefly &xi, Firefly &xj) { // movendo o firefly i em direção do j
@@ -244,85 +240,81 @@ void TargetGenerator::mapCallback(const nav_msgs::OccupancyGrid::ConstPtr &map) 
     loadAuxiliaryLists(map);
     avaliateStoppingCriteria();
 
-#ifdef PRINTMAP
-    printMap();
-#endif
+    #ifdef PRINTMAP
+        printMap();
+    #endif
 
-    getRobotPosition();
+        getRobotPosition();
 
-#ifdef SAVELANDSCAPE
-    saveFunctionLandscape();
-#endif
+    #ifdef SAVELANDSCAPE
+        saveFunctionLandscape();
+    #endif
 
-#ifdef SAVEMAP
-    saveMap();
-#endif
+    #ifdef SAVEMAP
+        saveMap();
+    #endif
 
     int destino[2];
     double dis = 0.0;
 
-    if (!first_time)
-    {
-        dis = pow(destino_corrente[0] - robot_position[0], 2) + pow(destino_corrente[1] - robot_position[1],2); // distância entre o robô e o alvo
-        dis = sqrt(dis);
-    }
+    dis = pow(destino_corrente[0] - robot_position[0], 2) + pow(destino_corrente[1] - robot_position[1],2); // distância entre o robô e o alvo
+    dis = sqrt(dis);
 
     // -> Se a distância é menor que a distancia minima, o alvo não é atualizado
-    if (dilatedMap[destino_corrente[1]][destino_corrente[0]] != 0)
+    if (dilatedMap[destino_corrente[0]][destino_corrente[1]] != 0)
         has_goal = false;
+    else has_goal = true;
 
     //cout << endl
     //     << "distancia: " << dis << endl
     //     << endl;
-    if (dis < DIST_MIN)
-        has_goal = false;
-    else
-        has_goal = true;
+    // if (dis < DIST_MIN)
+    //     has_goal = false;
+    // else
+    //     has_goal = true;
 
-    first_time = false;
-    if (dilatedMap[destino_corrente[1]][destino_corrente[0]] != 0)
-        has_goal = false;
+    //first_time = false;
 
-    if (!has_goal)
-    {
 
-#ifdef BRUTEFORCE
-        generateFunctionLandscape(w, h);
-#endif
+    if (!has_goal) {
 
-#ifdef FIREFLY
-        FireflyAlgorithm();
-#endif
+        #ifdef BRUTEFORCE
+                generateFunctionLandscape(w, h);
+        #endif
 
-#ifdef GENETICO
-        GeneticAlgorithm();
-#endif
+        #ifdef FIREFLY
+                FireflyAlgorithm();
+        #endif
 
-#ifdef DOWNHILLSIMPLEX
-    //temporário que recebe a posição atal do robô
-		double temp_pos[2];
-		temp_pos[0] = (double)robot_position[0];
-		temp_pos[1] = (double)robot_position[1];
-    double temp3;
+        #ifdef GENETICO
+                GeneticAlgorithm();
+        #endif
 
-		//double temp_dest[2];
+        #ifdef DOWNHILLSIMPLEX
+            //temporário que recebe a posição atal do robô
+        		double temp_pos[2];
+        		temp_pos[0] = (double)robot_position[0];
+        		temp_pos[1] = (double)robot_position[1];
+            double temp3;
 
-    //temp_dest = Simplex(temp_pos, 100, TAXERR, SCALE, PASSOS, VLALFA, VLBETA, VLGAMA)
-    temp3 = Simplex(temp_pos, 100, TAXERR, SCALE, PASSOS, VLALFA, VLBETA, VLGAMA);
-		//recebe fitness do menor como resposta
+        		//double temp_dest[2];
 
-    printf("ótimo encontrado: (%.0f,%.0f) = %f\n", temp_pos[0],temp_pos[1],temp3);
-		destino_corrente[0] = (int)temp_pos[1];
-		destino_corrente[1] = (int)temp_pos[0];
+            //temp_dest = Simplex(temp_pos, 100, TAXERR, SCALE, PASSOS, VLALFA, VLBETA, VLGAMA)
+            temp3 = Simplex(temp_pos, 100, TAXERR, SCALE, PASSOS, VLALFA, VLBETA, VLGAMA);
+        		//recebe fitness do menor como resposta
+
+            printf("ótimo encontrado: (%.0f,%.0f) = %f\n", temp_pos[0],temp_pos[1],temp3);
+        		destino_corrente[0] = (int)temp_pos[1];
+        		destino_corrente[1] = (int)temp_pos[0];
 
 
 
-#endif
+        #endif
 
-#ifdef MULTISTARTGRANDIENT
-#endif
+        #ifdef MULTISTARTGRANDIENT
+        #endif
 
-        publishNewTarget();
+             publishNewTarget();
     }
 }
 
@@ -400,7 +392,7 @@ void TargetGenerator::dilateDangerRegion(const nav_msgs::OccupancyGrid::ConstPtr
         for (int j = 0; j < w; j++)
         {
             pixel = _map[i][j];
-            aux = 4;
+            aux = 3;
 
             max = 0;
             double dis;
@@ -724,7 +716,7 @@ void TargetGenerator::publishNewTarget() {
 
 double TargetGenerator::distance(double *p1, double *p2) {
     double ssd = 0.0;
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < D; i++)
         ssd += pow(p1[i] - p2[i], 2);
     return sqrt(ssd) / pixel_size;
 }

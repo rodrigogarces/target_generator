@@ -6,3 +6,5 @@ Exp 1 => pathlenght: 767 	 function calls: 2937581
 Exp 1 => pathlenght: 339 	 function calls: 1030672 
 Exp 1 => pathlenght: 521 	 function calls: 473878 
 Exp 1 => pathlenght: 1082 	 function calls: 476655 
+Exp 1 => pathlenght: 197 	 function calls: 3884605 
+Exp 1 => pathlenght: 110 	 function calls: 10970411 
