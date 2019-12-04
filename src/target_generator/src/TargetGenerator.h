@@ -96,7 +96,7 @@ class TargetGenerator
     TargetGenerator(ros::NodeHandle *nodehandle);
 
   private:
-
+    int DIST_MIN;
 
     ros::NodeHandle nh_;
 
@@ -255,7 +255,7 @@ class TargetGenerator
     void init_firefly(Firefly *firefly);
     void init_vars(Fireflies &fireflies);
     void initFireflies(Fireflies &fireflies, int &Aval);
-    double euclidianDistance(double *var1, double *var2);
+    template<typename T> T euclidianDistance(T *var1, T *var2);
     void moveFireflies(Firefly &xi, Firefly &xj);
     void fireflyExploration(Fireflies &fireflies, int &Aval);
 

@@ -58,8 +58,8 @@ void TargetGenerator::initFireflies(Fireflies &fireflies, int &Aval) {
     }
 }
 
-double TargetGenerator::euclidianDistance(double *var1, double *var2) {
-    register double sum = 0.0;
+template<typename T> T TargetGenerator::euclidianDistance(T *var1, T *var2) {
+    register T sum = 0.0;
     for (int i = 0; i < D; i++) {
         sum += pow(var1[i] - var2[i], 2);
     }
@@ -72,7 +72,7 @@ double TargetGenerator::distance(double *p1, double *p2) {
 
 
 void TargetGenerator::moveFireflies(Firefly &xi, Firefly &xj) { // movendo o firefly i em direção do j
-    double euclidian_distance = euclidianDistance(xi.var, xj.var);
+    double euclidian_distance = euclidianDistance<double>(xi.var, xj.var);
     double beta = /* beta0 */ 1 * exp(-GAMMA * pow(euclidian_distance, 2));
     double ruido = ((double)(rand() % 100001) / 100000.);
     
@@ -239,10 +239,8 @@ void TargetGenerator::mapCallback(const nav_msgs::OccupancyGrid::ConstPtr &map) 
     dmax[0] = pixel_size * h;
     dmax[1] = pixel_size * w;
 
-    if (first_time)
-    {
+    if (first_time) {
         inicializeStateMatrices();
-        first_time = false;
     }
 
     dilateDangerRegion(map);
@@ -264,14 +262,18 @@ void TargetGenerator::mapCallback(const nav_msgs::OccupancyGrid::ConstPtr &map) 
     #endif
 
     int destino[2];
-    double dis = 0.0;
+    int dist = 0;
 
-    dis = pow(destino_corrente[0] - robot_position[0], 2) + pow(destino_corrente[1] - robot_position[1],2); // distância entre o robô e o alvo
-    dis = sqrt(dis);
+    dist = euclidianDistance<int>(destino_corrente, robot_position);
 
     // -> Se a distância é menor que a distancia minima, o alvo não é atualizado
-    if (dilatedMap[destino_corrente[0]][destino_corrente[1]] != 0){
-        printf("Reavalia....\n");
+    // if (dilatedMap[destino_corrente[0]][destino_corrente[1]] != 0){
+    //     printf("Reavalia....\n");
+    //     has_goal = false;
+    // } else has_goal = true;
+
+
+    if(dist > DIST_MIN) {
         has_goal = false;
     } else has_goal = true;
 
@@ -286,7 +288,9 @@ void TargetGenerator::mapCallback(const nav_msgs::OccupancyGrid::ConstPtr &map) 
     //first_time = false;
 
 
-    if (!has_goal) {
+    if (has_goal || first_time || (destino_corrente[0] >= h && destino_corrente[1] >= w)) {
+
+        first_time = false;
 
         #ifdef BRUTEFORCE
                 generateFunctionLandscape(w, h);
@@ -302,9 +306,9 @@ void TargetGenerator::mapCallback(const nav_msgs::OccupancyGrid::ConstPtr &map) 
 
         #ifdef DOWNHILLSIMPLEX
             //temporário que recebe a posição atal do robô
-        		double temp_pos[2];
-        		temp_pos[0] = (double)robot_position[0];
-        		temp_pos[1] = (double)robot_position[1];
+        	double temp_pos[2];
+        	temp_pos[0] = (double)robot_position[0];
+        	temp_pos[1] = (double)robot_position[1];
             double temp3;
 
         		//double temp_dest[2];
@@ -314,8 +318,8 @@ void TargetGenerator::mapCallback(const nav_msgs::OccupancyGrid::ConstPtr &map) 
         		//recebe fitness do menor como resposta
 
             printf("ótimo encontrado: (%.0f,%.0f) = %f\n", temp_pos[0],temp_pos[1],temp3);
-        		destino_corrente[0] = (int)temp_pos[1];
-        		destino_corrente[1] = (int)temp_pos[0];
+        	destino_corrente[0] = (int)temp_pos[1];
+        	destino_corrente[1] = (int)temp_pos[0];
 
 
 
@@ -323,8 +327,8 @@ void TargetGenerator::mapCallback(const nav_msgs::OccupancyGrid::ConstPtr &map) 
 
         #ifdef MULTISTARTGRANDIENT
         #endif
-
-             publishNewTarget();
+        DIST_MIN = euclidianDistance(destino_corrente, robot_position) / 4;
+        publishNewTarget();
     }
 }
 
