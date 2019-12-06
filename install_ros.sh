@@ -43,6 +43,10 @@ Terminal=false
 Type=Application
 Categories=Network;' | sudo tee /usr/share/applications/vrep.desktop
 
+#create vrep alias
+echo "alias vrep='/usr/local/V-REP_PRO_EDU_V3_6_2_Ubuntu16_04/vrep.sh'" >> ~/.bashrc
+source ~/.bashrcy
+
 #download project dependencies
 sudo apt install -y ros-kinetic-navigation ros-kinetic-move-base ros-kinetic-gmapping
 
