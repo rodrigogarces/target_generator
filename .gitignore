@@ -2,3 +2,8 @@ logs
 .catkin_tools
 build
 devel
+aval.txt
+avg_aval.txt
+avg_time.txt
+_map_.txt
+path.txt
