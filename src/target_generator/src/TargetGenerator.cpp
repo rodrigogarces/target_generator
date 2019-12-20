@@ -1,8 +1,8 @@
 #define FUNCAOPP
-#define PARAM_PLF
+#define PARAM_F4
 #define FIREFLY
-#define FIREFLYJORGE
 #define AMB1
+#define DEBUG
 
 
 #include "TargetGenerator.h"
@@ -48,7 +48,7 @@ void TargetGenerator::initFireflies(Fireflies &fireflies, int &Aval) {
         for (int j = 0; j < D; j++) {
             fireflies.indiv[i].var[j] = (double) randgen(dmin[j] ,dmax[j]);
         }
-        fireflies.indiv[i].fitness = ObjectiveFunction(fireflies.indiv[i].var, _step);
+        fireflies.indiv[i].fitness = ObjectiveFunction(fireflies.indiv[i].var);
         Aval++;
         if(fireflies.best.fitness > fireflies.indiv[i].fitness) {
             fireflies.best.var = fireflies.indiv[i].var;
@@ -111,7 +111,7 @@ void TargetGenerator::fireflyExploration(Fireflies &fireflies, int &Aval) {
 
                 moveFireflies(fireflies.indiv[i], fireflies.indiv[j]);
 
-                fireflies.indiv[i].fitness = ObjectiveFunction(fireflies.indiv[i].var, _step);
+                fireflies.indiv[i].fitness = ObjectiveFunction(fireflies.indiv[i].var);
                 
                 #ifdef DEBUG
                     printf("\n depois: %.2f    ",fireflies.indiv[i].fitness);
@@ -136,7 +136,7 @@ void TargetGenerator::fireflyExploration(Fireflies &fireflies, int &Aval) {
 
                 moveFireflies(fireflies.indiv[i], fireflies.indiv[j]);
 
-                fireflies.indiv[i].fitness = ObjectiveFunction(fireflies.indiv[i].var, _step);
+                fireflies.indiv[i].fitness = ObjectiveFunction(fireflies.indiv[i].var);
                 
                 #ifdef DEBUG
                     printf("\n depois: %.2f    ",fireflies.indiv[i].fitness);
@@ -231,13 +231,15 @@ void TargetGenerator::mapCallback(const nav_msgs::OccupancyGrid::ConstPtr &map) 
     w = map->info.width;                    // Largura do mapa
     h = map->info.height;                   // Altura do mapa
     pixel_size = map->info.resolution;      // resolução do mapa
+    cout << "H -> " << h << " W -> " << w << "\npixel size: " << pixel_size << endl;
     origin_x = map->info.origin.position.x; // coord. x da origem do mapa
     origin_y = map->info.origin.position.y; // coord. y da origem do mapa
+    cout << "Orig_x: " << origin_x << " Orig_y: " << origin_y << endl;
 
-    dmin[0] = 0;
-    dmin[1] = 0;
-    dmax[0] = pixel_size * h;
-    dmax[1] = pixel_size * w;
+    dmax[0] = -1 * origin_x;
+    dmax[1] = -1 * origin_y;
+    dmin[0] = origin_x;
+    dmin[1] = origin_y;
 
     if (first_time) {
         inicializeStateMatrices();
@@ -277,9 +279,7 @@ void TargetGenerator::mapCallback(const nav_msgs::OccupancyGrid::ConstPtr &map) 
         has_goal = false;
     } else has_goal = true;
 
-    //cout << endl
-    //     << "distancia: " << dis << endl
-    //     << endl;
+
     // if (dis < DIST_MIN)
     //     has_goal = false;
     // else
@@ -327,7 +327,6 @@ void TargetGenerator::mapCallback(const nav_msgs::OccupancyGrid::ConstPtr &map) 
 
         #ifdef MULTISTARTGRANDIENT
         #endif
-        DIST_MIN = euclidianDistance(destino_corrente, robot_position) / 4;
         publishNewTarget();
     }
 }
@@ -719,9 +718,13 @@ void TargetGenerator::publishNewTarget() {
     //msg.header.stamp = ros::Time();
     std::string frame = "/map";
     _msg.header.frame_id = frame.c_str();
-
+   
     _msg.pose.position.x = destino_corrente[0] * pixel_size + origin_x; //path[l][0];
     _msg.pose.position.y = destino_corrente[1] * pixel_size + origin_y; //path[l][1];
+
+    //_msg.pose.position.x = destino_corrente[1]; //path[l][0];
+    //.pose.position.y = destino_corrente[0]; //path[l][1];
+
 
     cout << _msg.pose.position.x << " " << _msg.pose.position.y << endl;
     _msg.pose.position.z = 1;
@@ -735,172 +738,29 @@ void TargetGenerator::FireflyAlgorithm() {
     double B0 = 1;      // 1
     double gamma = 0.4; // 0.4
     double alpha = 0.3; // 0.1
-
-    double bestFitness = 10000000.0;
     double *bestPosition;
     int epoca = 0;
+    Fireflies fireflies;
+    srand((unsigned) time(NULL));
+    register int Aval = 0;
+    initFireflies(fireflies, Aval);
+    while(epoca < MaxEpocas) {
+        fireflyExploration(fireflies, Aval);
+        epoca++;
+    }
 
-    #ifdef FIREFLYRAFA
-        Firefly *f;
+    bestPosition = fireflies.best.var;
 
-        bestPosition = (double *)malloc(2 * sizeof(double));
+    destino_corrente[0] = (int)bestPosition[0] / pixel_size;
+    destino_corrente[1] = (int)bestPosition[1] / pixel_size;
 
-        fast_srand(time(NULL));
-        double r01;
-
-        int ini = 0, i, j, k;
-
-        bool hasChange;
-        double beta;
-
-        struct timeval inicio, final;
-        double tmili;
-
-        gettimeofday(&inicio, NULL);
-
-        double newpos[2];
-
-        for (i = 0; i < NumFireflies; i++)
-        {
-            if (i >= ini)
-            {
-                f = new Firefly();
-                for (j = 0; j < 2; j++)
-                {
-                    r01 = ((double)(fastrand() % 101) / 100);
-                    newpos[j] = (dmax[j] - dmin[j]) * r01 + dmin[j]; // inicializando as posicoes aleatoriamente
-                }
-
-                f->SetPosicao(newpos);
-                f->bposition = newpos;
-
-                populacao.push_back(f);
-            }
-        }
-
-        // if (hc)
-        // {
-        //     populacao[NumFireflies] = campeao;
-        // }
-
-        gettimeofday(&final, NULL);
-        tmili = (1 * (final.tv_sec - inicio.tv_sec) * 1000 + (final.tv_usec - inicio.tv_usec) / 1);
-
-        int bepoca = 0;
-        
-        //n = 0;
-
-        double r;
-        double Ii;
-        double Ij;
-
-        gettimeofday(&inicio, NULL);
-
-        Firefly *atual;
-
-        while (epoca < MaxEpocas)
-        {
-            hasChange = false;
-
-            // Evaluate:
-            for (i = 0; i < NumFireflies; i++)
-                populacao[i]->fitness = ObjectiveFunction(populacao[i]->GetPosicao(), _step);
-            //n++;
-
-            heapSort();
-
-            // Move:
-            for (i = 0; i < NumFireflies; i++)
-            {
-                double *ipos = populacao[i]->GetPosicao();
-                for (j = 0; j < NumFireflies; j++)
-                {
-                    double *jpos = populacao[j]->GetPosicao();
-
-                    r = (ipos[0] - jpos[0]) * (ipos[0] - jpos[0]) +
-                        (ipos[1] - jpos[1]) * (ipos[1] - jpos[1]);
-
-                    r = sqrt(r) / pixel_size;
-
-                    Ii = populacao[i]->fitness;
-                    Ij = populacao[j]->fitness;
-
-                    if (Ij < Ii)
-                    {
-                        hasChange = true;
-
-                        beta = B0 * exp(-gamma * r * r);
-
-                        for (k = 0; k < 2; k++)
-                        {
-                            //r01 = ((double)(fastrand() % 101) / 100);
-                            ;
-
-                            newpos[k] = ipos[k] + beta * (jpos[k] - ipos[k]) + alpha * (r01 - 0.5) * (dmax[k] - dmin[k]);
-
-                            if (newpos[k] < dmin[k])
-                                newpos[k] = (dmax[k] - dmin[k]) * ((double)(fastrand() % 101) / 100) + dmin[k];
-                            if (newpos[k] > dmax[k])
-                                newpos[k] = (dmax[k] - dmin[k]) * ((double)(fastrand() % 101) / 100) + dmin[k];
-                        }
-                        populacao[i]->SetPosicao(newpos);
-                    }
-
-                    if (populacao[i]->bfitness > populacao[i]->fitness)
-                    {
-                        populacao[i]->bfitness = populacao[i]->fitness;
-                        populacao[i]->bposition = populacao[i]->GetPosicao();
-                    }
-                }
-
-                if (populacao[i]->fitness < bestFitness)
-                {
-                    bestFitness = populacao[i]->fitness;
-                    for (k = 0; k < 2; k++)
-                        bestPosition[k] = populacao[i]->GetPosicao()[k];
-
-                    //campeao = populacao[i];
-                    //hc = true;
-                    bepoca = epoca;
-                }
-            }
-            epoca++;
-        }
-
-        if (bepoca > maxiEpocas)
-        {
-            maxiEpocas = bepoca;
-        }
-
-        if (bepoca < minEpocas)
-        {
-            minEpocas = bepoca;
-        }
-    #endif
-
-    #ifdef FIREFLYJORGE
-        Fireflies fireflies;
-        srand((unsigned) time(NULL));
-        register int Aval = 0;
-        initFireflies(fireflies, Aval);
-        while(epoca < MaxEpocas) {
-            fireflyExploration(fireflies, Aval);
-            epoca++;
-        }
-
-        bestPosition = fireflies.best.var;
-
-    #endif
-
-        destino_corrente[0] = (int)bestPosition[1] / pixel_size;
-        destino_corrente[1] = (int)bestPosition[0] / pixel_size;
+    DIST_MIN = euclidianDistance(destino_corrente, robot_position) / 4;
 }
 
-double TargetGenerator::ObjectiveFunction(double posicao[], int step)
-{
+double TargetGenerator::ObjectiveFunction(double posicao[]) {
     Aval++;
-    int i = posicao[0] / pixel_size; //cout << "i -> " << i << endl;
-    int j = posicao[1] / pixel_size; //cout << "j -> " << j << endl;
+    int i = posicao[0] / pixel_size;
+    int j = posicao[1] / pixel_size;
 
     double pixel[2] = {(double)i, (double)j};
 
@@ -909,8 +769,7 @@ double TargetGenerator::ObjectiveFunction(double posicao[], int step)
         return 100000000000;
     }
 
-    if (_map[i][j] > -1)
-    {
+    if (_map[i][j] > -1) {
         double distF = 0;
         double rp[2] = {(double)robot_position[1], (double)robot_position[0]};
         double dp[2] = {(double)destino_corrente[1], (double)destino_corrente[0]};
@@ -932,7 +791,7 @@ double TargetGenerator::ObjectiveFunction(double posicao[], int step)
         }
 
         double distV = 0;
-        //cout << "\n=> VI => " << vi << endl;
+        
         for (int v = 0; v < vi; ++v)
         {
             double pv[2] = {(double)visitados[v][0], (double)visitados[v][1]};
@@ -940,26 +799,27 @@ double TargetGenerator::ObjectiveFunction(double posicao[], int step)
             distV += exp(-d / (2 * w3 * w3));
         }
 
-#ifdef FUNCAOPP
-        float lambda = 0.1;
-        return (-alpha * distF + beta * distR + rho * distV) / (lambda * dr);
-#endif
+    #ifdef FUNCAOPP
+            float lambda = 0.1;
+            return (-alpha * distF + beta * distR + rho * distV) / (lambda * dr);
+    #endif
 
-#ifdef FUNCAOPC
-        double k = 20;
-        if (dr < k)
-            return -alpha1 * distF + beta * distR + rho * distV;
-        else
-            return -alpha2 * distF + beta * distR + rho * distV;
-#endif
+    #ifdef FUNCAOPC
+            double k = 20;
+            if (dr < k)
+                return -alpha1 * distF + beta * distR + rho * distV;
+            else
+                return -alpha2 * distF + beta * distR + rho * distV;
+    #endif
 
-#ifdef FUNCAOPL
-        float lambda = 10;
-        return -alpha * distF + beta * distR + rho * distV + lambda * dr;
-#endif
+    #ifdef FUNCAOPL
+            float lambda = 10;
+            return -alpha * distF + beta * distR + rho * distV + lambda * dr;
+    #endif
     }
     else
     {
+        cout << "_map == -1" << endl;
         return 1000000000000000;
     }
 }
@@ -1003,42 +863,6 @@ void TargetGenerator::ReplacePop()
     }
 }
 
-void TargetGenerator::heapSort()
-{
-    // Build heap (rearrange array)
-    for (int i = NumFireflies / 2 - 1; i >= 0; i--)
-        heapify(NumFireflies, i);
-
-    // One by one extract an element from heap
-    for (int i = NumFireflies - 1; i >= 0; i--)
-    {
-        // Move current root to end
-        swap(populacao[0], populacao[i]);
-
-        // call max heapify on the reduced heap
-        heapify(i, 0);
-    }
-}
-
-void TargetGenerator::heapify(int n, int i)
-{
-    int largest = i;   //initiaze largest as root
-    int l = 2 * i + 1; // left = 2*i + 1
-    int r = 2 * i + 2; // right = 2*i + 2
-
-    // If right child is larger than largest so far
-    if (r < n && populacao[r]->fitness > populacao[largest]->fitness)
-        largest = r;
-
-    // If largest is not root
-    if (largest != i)
-    {
-        swap(populacao[i], populacao[largest]);
-
-        // Recursively heapify the affected sub-tree
-        heapify(n, largest);
-    }
-}
 
 void TargetGenerator::GeneticAlgorithm()
 {
@@ -1116,7 +940,7 @@ void TargetGenerator::GeneticAlgorithm()
             }
             else
             {
-                fit = ObjectiveFunction(P.indiv[P.pior].var, P.tamInd);
+                fit = ObjectiveFunction(P.indiv[P.pior].var);
             }
 #endif
 #ifdef SIMPLEND
@@ -1127,7 +951,7 @@ void TargetGenerator::GeneticAlgorithm()
             }
             else
             {
-                fit = ObjectiveFunction(P.indiv[P.pior].var, P.tamInd);
+                fit = ObjectiveFunction(P.indiv[P.pior].var);
             }
 #endif
 #ifdef NOSIMPLE
@@ -1139,7 +963,7 @@ void TargetGenerator::GeneticAlgorithm()
             //                P.indiv[P.pior].var[0]=2.25;
             //                P.indiv[P.pior].var[1]=1.6;
 
-            fit = ObjectiveFunction(P.indiv[P.pior].var, P.tamInd);
+            fit = ObjectiveFunction(P.indiv[P.pior].var);
 #endif
             AtualizaPop(&P, P.pior, fit, MAXGER - numGeracoes);
 #ifdef PASSO
@@ -1197,7 +1021,7 @@ void TargetGenerator::IniciaPop(Populacao *p, int m, int n)
         p->indiv[i].var[0] = (double)randgen(dmin[0], dmax[0]);
         p->indiv[i].var[1] = (double)randgen(dmin[1], dmax[1]);
 
-        fit = ObjectiveFunction(p->indiv[i].var, n);
+        fit = ObjectiveFunction(p->indiv[i].var);
 
         p->indiv[i].fit = fit;
         if (fit > p->indiv[pior].fit)
@@ -1405,7 +1229,7 @@ double TargetGenerator::Simplex(double start[], int n, double EPSILON,
     /* find the initial function values */
     for (j = 0; j <= n; j++)
     {
-        f[j] = ObjectiveFunction(v[j], n);
+        f[j] = ObjectiveFunction(v[j]);
     }
 
     k = n + 1;
@@ -1469,7 +1293,7 @@ double TargetGenerator::Simplex(double start[], int n, double EPSILON,
             /*vr[j] = (1+ALPHA)*vm[j] - ALPHA*v[vg][j];*/
             vr[j] = vm[j] + ALPHA * (vm[j] - v[vg][j]);
         }
-        fr = ObjectiveFunction(vr, n);
+        fr = ObjectiveFunction(vr);
         k++;
 
         if (fr < f[vh] && fr >= f[vs])
@@ -1489,7 +1313,7 @@ double TargetGenerator::Simplex(double start[], int n, double EPSILON,
                 /*ve[j] = GAMMA*vr[j] + (1-GAMMA)*vm[j];*/
                 ve[j] = vm[j] + GAMMA * (vr[j] - vm[j]);
             }
-            fe = ObjectiveFunction(ve, n);
+            fe = ObjectiveFunction(ve);
             k++;
 
             /* by making fe < fr as opposed to fe < f[vs],
@@ -1525,7 +1349,7 @@ double TargetGenerator::Simplex(double start[], int n, double EPSILON,
                     /*vc[j] = BETA*v[vg][j] + (1-BETA)*vm[j];*/
                     vc[j] = vm[j] + BETA * (vr[j] - vm[j]);
                 }
-                fc = ObjectiveFunction(vc, n);
+                fc = ObjectiveFunction(vc);
                 k++;
             }
             else
@@ -1536,7 +1360,7 @@ double TargetGenerator::Simplex(double start[], int n, double EPSILON,
                     /*vc[j] = BETA*v[vg][j] + (1-BETA)*vm[j];*/
                     vc[j] = vm[j] - BETA * (vm[j] - v[vg][j]);
                 }
-                fc = ObjectiveFunction(vc, n);
+                fc = ObjectiveFunction(vc);
                 k++;
             }
 
@@ -1565,9 +1389,9 @@ double TargetGenerator::Simplex(double start[], int n, double EPSILON,
                         }
                     }
                 }
-                f[vg] = ObjectiveFunction(v[vg], n);
+                f[vg] = ObjectiveFunction(v[vg]);
                 k++;
-                f[vh] = ObjectiveFunction(v[vh], n);
+                f[vh] = ObjectiveFunction(v[vh]);
                 k++;
             }
         }
@@ -1613,7 +1437,7 @@ double TargetGenerator::Simplex(double start[], int n, double EPSILON,
         start[j] = v[vs][j];
 
     }
-    min = ObjectiveFunction(v[vs], n);
+    min = ObjectiveFunction(v[vs]);
     // printf("ótimo encontrado: (%.0f,%.0f) = %f\n", start[0],start[1],min);
     k++;
     //  fprintf("%d Function Evaluations\n",k);
@@ -1684,7 +1508,7 @@ void TargetGenerator::IniciaSct(Populacao *p, int m, int n, int nfun)
         for (j = 0; j < n; j++)
             p->indiv[i].var[j] = (double)randgen(lista[j], lista[j] + pas);
         lista[dim] = (lista[dim] + 2 * pas > sup ? sup - pas : lista[dim] + pas);
-        fit = ObjectiveFunction(p->indiv[i].var, n);
+        fit = ObjectiveFunction(p->indiv[i].var);
         p->indiv[i].fit = fit;
         if (fit > p->indiv[pior].fit)
             pior = i;

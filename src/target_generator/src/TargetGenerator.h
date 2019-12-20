@@ -206,9 +206,6 @@ class TargetGenerator
     void SortPop();
     void ReplacePop();
 
-    void heapify(int n, int i);
-    void heapSort();
-
     double distance(double *p1, double *p2);
 
     void IniciaPop(Populacao *p, int m, int n);
@@ -236,7 +233,7 @@ class TargetGenerator
     void saveMap();
     void generateFunctionLandscape(int w, int h);
     void saveFunctionLandscape(int w, int h);
-    double ObjectiveFunction(double posicao[], int step);
+    double ObjectiveFunction(double posicao[]);
 
     void getRobotPosition();
     void publishNewTarget();
